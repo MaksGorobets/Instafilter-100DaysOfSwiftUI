@@ -11,7 +11,7 @@
 		E9E9B0E52B3C8A2F007EE0EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */; };
 		E9E9B0E72B3C8A30007EE0EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9E9B0E62B3C8A30007EE0EC /* Assets.xcassets */; };
 		E9E9B0EA2B3C8A30007EE0EC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9E9B0E92B3C8A30007EE0EC /* Preview Assets.xcassets */; };
-		E9E9B0F12B3C958E007EE0EC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9B0F02B3C958E007EE0EC /* ImagePicker.swift */; };
+		E9F3A1882B40912200D060FB /* Sliders in Frameworks */ = {isa = PBXBuildFile; productRef = E9F3A1872B40912200D060FB /* Sliders */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +20,6 @@
 		E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E9E9B0E62B3C8A30007EE0EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E9E9B0E92B3C8A30007EE0EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		E9E9B0F02B3C958E007EE0EC /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9F3A1882B40912200D060FB /* Sliders in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +55,6 @@
 			children = (
 				E9E9B0E22B3C8A2F007EE0EC /* InstafilterApp.swift */,
 				E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */,
-				E9E9B0F02B3C958E007EE0EC /* ImagePicker.swift */,
 				E9E9B0E62B3C8A30007EE0EC /* Assets.xcassets */,
 				E9E9B0E82B3C8A30007EE0EC /* Preview Content */,
 			);
@@ -86,6 +85,9 @@
 			dependencies = (
 			);
 			name = Instafilter;
+			packageProductDependencies = (
+				E9F3A1872B40912200D060FB /* Sliders */,
+			);
 			productName = Instafilter;
 			productReference = E9E9B0DF2B3C8A2F007EE0EC /* Instafilter.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +116,9 @@
 				Base,
 			);
 			mainGroup = E9E9B0D62B3C8A2F007EE0EC;
+			packageReferences = (
+				E9F3A1862B40912200D060FB /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
+			);
 			productRefGroup = E9E9B0E02B3C8A2F007EE0EC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,7 +145,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9E9B0F12B3C958E007EE0EC /* ImagePicker.swift in Sources */,
 				E9E9B0E52B3C8A2F007EE0EC /* ContentView.swift in Sources */,
 				E9E9B0E32B3C8A2F007EE0EC /* InstafilterApp.swift in Sources */,
 			);
@@ -276,6 +280,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Instafilter/Preview Content\"";
+				DEVELOPMENT_TEAM = XUYF93872P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -304,6 +309,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Instafilter/Preview Content\"";
+				DEVELOPMENT_TEAM = XUYF93872P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -346,6 +352,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E9F3A1862B40912200D060FB /* XCRemoteSwiftPackageReference "swiftui-sliders" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spacenation/swiftui-sliders";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E9F3A1872B40912200D060FB /* Sliders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9F3A1862B40912200D060FB /* XCRemoteSwiftPackageReference "swiftui-sliders" */;
+			productName = Sliders;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E9E9B0D72B3C8A2F007EE0EC /* Project object */;
 }

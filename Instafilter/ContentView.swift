@@ -7,76 +7,123 @@
 
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import PhotosUI
 import SwiftUI
+import Sliders
+
+
 
 struct ContentView: View {
-    
-    @State private var currentFilter = CIFilter.pixellate()
-    
-    @State private var amount = 1.0
-    
     @State private var image: Image?
-    @State private var uiImage: UIImage?
-    @State private var isPicking = false
+    @State private var filterAmount = 0.5
+    @State private var pickerItem: PhotosPickerItem?
+    
+    @State private var currentFilter = CIFilter.sepiaTone()
+    
+    let context = CIContext()
     
     var body: some View {
-        VStack {
-            if image != nil {
-                Spacer()
-                image?
-                    .resizable()
-                    .scaledToFit()
-                Spacer()
-            } else {
-                ContentUnavailableView("Pick an image", systemImage: "photo.badge.plus")
-            }
-            Slider(value: $amount, in: 0.1...1)
-                .onChange(of: amount) { oldValue, newValue in
-                    loadImage()
-                }
-                .padding()
-            Button("Pick an image") {
-                isPicking.toggle()
-            }
-            .sheet(isPresented: $isPicking, content: {
-                ImagePicker(uiImage: $uiImage, isPresenting: $isPicking)
-                    .onDisappear(perform: {
+        NavigationStack {
+            ZStack {
+                Color(.background)
+                    .ignoresSafeArea()
+                    .navigationTitle("Instafilter")
+                VStack {
+                    Spacer()
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        if let image {
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            ContentUnavailableView("No image", systemImage: "arrow.up", description: Text("Tap to pick a photo"))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .onChange(of: pickerItem) { oldValue, newValue in
                         loadImage()
-                    })
-            })
+                    }
+                    Spacer()
+                    HStack {
+                        Text("Intensity")
+                            .bold()
+                        ValueSlider(value: $filterAmount)
+                            .valueSliderStyle(
+                                HorizontalValueSliderStyle(
+                                    track:
+                                        HorizontalTrack(view: Color.blue)
+                                        .frame(height: 3)
+                                        .background(Color.red)
+                                        .cornerRadius(1.5)
+                                )
+                            )
+                            .onChange(of: filterAmount) { oldValue, newValue in
+                                applyFilter()
+                            }
+                    }
+                    .frame(height: 50)
+                    .padding(.horizontal)
+                    HStack {
+                        Button {
+                            changeFilter()
+                        } label: {
+                            CFButton()
+                        }
+                        Button {
+                            //sharing
+                        } label: {
+                            Circle()
+                                .foregroundStyle(.blue)
+                                .frame(width: 50, height: 50)
+                                .overlay(
+                                    Image(systemName: "square.and.arrow.up")
+                                        .foregroundStyle(.white)
+                                )
+                        }
+                    }
+                }
+            }
         }
+        .preferredColorScheme(.dark)
+    }
+    
+    func changeFilter() {
+        
     }
     
     func loadImage() {
-        guard let inputImage = uiImage else { return }
-        let ciImage = CIImage(image: inputImage)
+        Task {
+            guard let rawImage = try await pickerItem?.loadTransferable(type: Data.self) else { return }
+            let ciImage = CIImage(data: rawImage)
+            currentFilter.setValue(ciImage, forKey: kCIInputImageKey)
+            applyFilter()
+        }
         
-        let context = CIContext()
-        
-        currentFilter.inputImage = ciImage
-        currentFilter.scale = Float(amount * 100)
-        //        let amount = 1.0
-        //        let inputKeys = currentFilter.inputKeys
-        
-        //        if inputKeys.contains(kCIInputIntensityKey) {
-        //            currentFilter.setValue(amount, forKey: kCIInputIntensityKey)
-        //        }
-        //
-        //        if inputKeys.contains(kCIInputRadiusKey) {
-        //            currentFilter.setValue(amount * 360, forKey: kCIInputRadiusKey)
-        //        }
-        //
-        //        if inputKeys.contains(kCIInputScaleKey) {
-        //            currentFilter.setValue(amount * 10, forKey: kCIInputScaleKey)
-        //        }
-        
+    }
+    
+    func applyFilter() {
+        currentFilter.intensity = Float(filterAmount)
         guard let outputImage = currentFilter.outputImage else { return }
         guard let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else { return }
-        
         let uiImage = UIImage(cgImage: cgImage)
         image = Image(uiImage: uiImage)
     }
     
+}
+
+struct CFButton: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 30)
+                .foregroundStyle(LinearGradient(colors: [.blue, .red], startPoint: .leading, endPoint: .trailing))
+            HStack {
+                Text("Change filter")
+                Image(systemName: "pencil")
+            }
+            .foregroundStyle(.white)
+        }
+        .frame(width: 200, height: 50)
+    }
 }
 
 #Preview {
