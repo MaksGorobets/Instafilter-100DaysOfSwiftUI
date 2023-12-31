@@ -9,16 +9,19 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import PhotosUI
 import SwiftUI
+import StoreKit
 import Sliders
 
-
-
 struct ContentView: View {
+    @Environment(\.requestReview) var requestReview
     @State private var image: Image?
     @State private var filterAmount = 0.5
     @State private var pickerItem: PhotosPickerItem?
+    @State private var filterMenu = false
     
-    @State private var currentFilter = CIFilter.sepiaTone()
+    @State private var currentFilter: CIFilter = CIFilter.sepiaTone()
+    
+    @AppStorage("shareCounter") var filterSetCounter = 0
     
     let context = CIContext()
     
@@ -35,6 +38,9 @@ struct ContentView: View {
                             image
                                 .resizable()
                                 .scaledToFit()
+                                .padding(5)
+                                .background(LinearGradient(colors: [.blue, .red], startPoint: .leading, endPoint: .trailing))
+                                .shadow(color: .red, radius: 5)
                         } else {
                             ContentUnavailableView("No image", systemImage: "arrow.up", description: Text("Tap to pick a photo"))
                         }
@@ -64,32 +70,33 @@ struct ContentView: View {
                     .frame(height: 50)
                     .padding(.horizontal)
                     HStack {
-                        Button {
-                            changeFilter()
-                        } label: {
-                            CFButton()
-                        }
-                        Button {
-                            //sharing
-                        } label: {
-                            Circle()
-                                .foregroundStyle(.blue)
-                                .frame(width: 50, height: 50)
-                                .overlay(
-                                    Image(systemName: "square.and.arrow.up")
-                                        .foregroundStyle(.white)
-                                )
+                        Button { changeFilter() } label: { CFButton() }
+                        if image != nil {
+                            ShareLink(item: image!, preview: SharePreview("Final image", image: image!)) {
+                                ShareButton()
+                            }
                         }
                     }
                     .padding(.bottom, 5)
                 }
+            }
+            .confirmationDialog("Choose filter", isPresented: $filterMenu) {
+                Button("Bloom") { setFilter(CIFilter.bloom()) }
+                Button("Crystallize") { setFilter(CIFilter.crystallize()) }
+                Button("xRay") { setFilter(CIFilter.xRay()) }
+                Button("Sepia Tone") { setFilter(CIFilter.sepiaTone()) }
+                Button("Pixellate") { setFilter(CIFilter.pixellate()) }
+                Button("Area Average") { setFilter(CIFilter.areaAverage()) }
+                Button("Thermal") { setFilter(CIFilter.thermal()) }
+                Button("Vignette") { setFilter(CIFilter.vignette()) }
+                Button("Comic Effect") { setFilter(CIFilter.comicEffect()) }
             }
         }
         .preferredColorScheme(.dark)
     }
     
     func changeFilter() {
-        
+        filterMenu.toggle()
     }
     
     func loadImage() {
@@ -103,27 +110,28 @@ struct ContentView: View {
     }
     
     func applyFilter() {
-        currentFilter.intensity = Float(filterAmount)
+        let inputKeys = currentFilter.inputKeys
+        
+        if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterAmount, forKey: kCIInputIntensityKey) }
+        
+        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterAmount * 50, forKey: kCIInputScaleKey) }
+        
+        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterAmount * 200 , forKey: kCIInputRadiusKey) }
+        
         guard let outputImage = currentFilter.outputImage else { return }
         guard let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else { return }
         let uiImage = UIImage(cgImage: cgImage)
         image = Image(uiImage: uiImage)
     }
     
-}
-
-struct CFButton: View {
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 30)
-                .foregroundStyle(LinearGradient(colors: [.blue, .red], startPoint: .leading, endPoint: .trailing))
-            HStack {
-                Text("Change filter")
-                Image(systemName: "pencil")
-            }
-            .foregroundStyle(.white)
+    @MainActor func setFilter(_ filter: CIFilter) {
+        if filterSetCounter == 5 {
+            requestReview()
         }
-        .frame(width: 200, height: 50)
+        filterSetCounter += 1
+            
+        currentFilter = filter
+        loadImage()
     }
 }
 
