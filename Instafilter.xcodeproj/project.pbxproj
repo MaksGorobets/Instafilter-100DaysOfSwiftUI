@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E9351A562B433ECA009FBE3C /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9351A552B433ECA009FBE3C /* ContentViewModel.swift */; };
 		E9577D502B41C24300D8DB67 /* ButtonsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9577D4F2B41C24300D8DB67 /* ButtonsViews.swift */; };
 		E9E9B0E32B3C8A2F007EE0EC /* InstafilterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9B0E22B3C8A2F007EE0EC /* InstafilterApp.swift */; };
 		E9E9B0E52B3C8A2F007EE0EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E9351A552B433ECA009FBE3C /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		E9577D4F2B41C24300D8DB67 /* ButtonsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsViews.swift; sourceTree = "<group>"; };
 		E9E9B0DF2B3C8A2F007EE0EC /* Instafilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Instafilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9E9B0E22B3C8A2F007EE0EC /* InstafilterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstafilterApp.swift; sourceTree = "<group>"; };
@@ -36,6 +38,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E9351A542B433EA5009FBE3C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9577D4F2B41C24300D8DB67 /* ButtonsViews.swift */,
+				E9351A572B43452F009FBE3C /* ContentView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E9351A572B43452F009FBE3C /* ContentView */ = {
+			isa = PBXGroup;
+			children = (
+				E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */,
+				E9351A552B433ECA009FBE3C /* ContentViewModel.swift */,
+			);
+			path = ContentView;
+			sourceTree = "<group>";
+		};
 		E9E9B0D62B3C8A2F007EE0EC = {
 			isa = PBXGroup;
 			children = (
@@ -56,8 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				E9E9B0E22B3C8A2F007EE0EC /* InstafilterApp.swift */,
-				E9577D4F2B41C24300D8DB67 /* ButtonsViews.swift */,
-				E9E9B0E42B3C8A2F007EE0EC /* ContentView.swift */,
+				E9351A542B433EA5009FBE3C /* Views */,
 				E9E9B0E62B3C8A30007EE0EC /* Assets.xcassets */,
 				E9E9B0E82B3C8A30007EE0EC /* Preview Content */,
 			);
@@ -148,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9351A562B433ECA009FBE3C /* ContentViewModel.swift in Sources */,
 				E9E9B0E52B3C8A2F007EE0EC /* ContentView.swift in Sources */,
 				E9577D502B41C24300D8DB67 /* ButtonsViews.swift in Sources */,
 				E9E9B0E32B3C8A2F007EE0EC /* InstafilterApp.swift in Sources */,
